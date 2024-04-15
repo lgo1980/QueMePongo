@@ -2,21 +2,18 @@ package ar.edu.utn.frba.dds;
 
 public class Prenda {
 
-  private final TipoPrenda tipo;
-  private final Material material;
-  private final Color colorPrimario;
-  private final Color colorSecundario;
+  private TipoPrenda tipo;
+  private Material material;
+  private Color colorPrimario;
+  private Color colorSecundario;
+
+  public Prenda() {
+  }
 
   public Prenda(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario) {
-    if (tipo == null)
-      throw new IllegalArgumentException("Especificar el tipo de prenda");
-    if (material == null)
-      throw new IllegalArgumentException("Especificar el tipo de material");
-    if (colorPrimario == null)
-      throw new IllegalArgumentException("Especificar el tipo de colorprimario");
-    this.tipo = tipo;
-    this.material = material;
-    this.colorPrimario = colorPrimario;
+    this.setTipo(tipo);
+    this.setMaterial(material);
+    this.setColorPrimario(colorPrimario);
     this.colorSecundario = colorSecundario;
   }
 
@@ -24,16 +21,38 @@ public class Prenda {
     return tipo;
   }
 
+  public void setTipo(TipoPrenda tipo) {
+    if (tipo == null)
+      throw new IllegalArgumentException("Especificar el tipo de prenda");
+    this.tipo = tipo;
+  }
+
   public Material getMaterial() {
     return material;
+  }
+
+  public void setMaterial(Material material) {
+    if (material == null)
+      throw new IllegalArgumentException("Especificar el tipo de material");
+    this.material = material;
   }
 
   public Color getColorPrimario() {
     return colorPrimario;
   }
 
+  public void setColorPrimario(Color colorPrimario) {
+    if (colorPrimario == null)
+      throw new IllegalArgumentException("Especificar el tipo de color primario");
+    this.colorPrimario = colorPrimario;
+  }
+
   public Color getColorSecundario() {
     return colorSecundario;
+  }
+
+  public void setColorSecundario(Color colorSecundario) {
+    this.colorSecundario = colorSecundario;
   }
 
   /*public void esValidaLaPrenda() {
