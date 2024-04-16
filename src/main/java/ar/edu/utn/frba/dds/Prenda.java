@@ -2,67 +2,64 @@ package ar.edu.utn.frba.dds;
 
 public class Prenda {
 
-  private TipoPrenda tipo;
+  private TipoPrenda tipoPrenda;
   private Material material;
   private Color colorPrimario;
   private Color colorSecundario;
+  private boolean guardada = false;
 
   public Prenda() {
   }
 
-  public Prenda(TipoPrenda tipo, Material material, Color colorPrimario, Color colorSecundario) {
-    this.setTipo(tipo);
-    this.setMaterial(material);
-    this.setColorPrimario(colorPrimario);
+  public Prenda(TipoPrenda tipoPrenda, Material material,
+                Color colorPrimario, Color colorSecundario) {
+    this.especificarTipo(tipoPrenda);
+    this.especificarResto(material, colorPrimario, colorSecundario);
+  }
+
+  public void especificarTipo(TipoPrenda tipoPrenda) {
+    if (tipoPrenda == null)
+      throw new IllegalArgumentException("Especificar el tipo de prenda");
+    this.tipoPrenda = tipoPrenda;
+  }
+
+  public void especificarResto(Material material, Color colorPrimario, Color colorSecundario) {
+    if (material == null)
+      throw new IllegalArgumentException("Especificar el tipo de material");
+    this.material = material;
+    if (colorPrimario == null)
+      throw new IllegalArgumentException("Especificar el tipo de color primario");
+    this.colorPrimario = colorPrimario;
     this.colorSecundario = colorSecundario;
   }
 
-  public TipoPrenda getTipo() {
-    return tipo;
-  }
-
-  public void setTipo(TipoPrenda tipo) {
-    if (tipo == null)
-      throw new IllegalArgumentException("Especificar el tipo de prenda");
-    this.tipo = tipo;
+  public TipoPrenda getTipoPrenda() {
+    return tipoPrenda;
   }
 
   public Material getMaterial() {
     return material;
   }
 
-  public void setMaterial(Material material) {
-    if (material == null)
-      throw new IllegalArgumentException("Especificar el tipo de material");
-    this.material = material;
-  }
-
   public Color getColorPrimario() {
     return colorPrimario;
-  }
-
-  public void setColorPrimario(Color colorPrimario) {
-    if (colorPrimario == null)
-      throw new IllegalArgumentException("Especificar el tipo de color primario");
-    this.colorPrimario = colorPrimario;
   }
 
   public Color getColorSecundario() {
     return colorSecundario;
   }
 
-  public void setColorSecundario(Color colorSecundario) {
-    this.colorSecundario = colorSecundario;
+  public boolean isGuardada() {
+    return guardada;
   }
 
-  /*public void esValidaLaPrenda() {
-    if (this.tipo == null)
-      throw new IllegalArgumentException("Especificar el tipo de prenda");
-    *//*if (this.categoria == null)
-      throw new IllegalArgumentException("Especificar el tipo de categoria");*//*
-    if (this.material == null)
-      throw new IllegalArgumentException("Especificar el tipo de material");
-    if (this.colorPrimario == null)
-      throw new IllegalArgumentException("Especificar el tipo de colorprimario");
-  }*/
+  public Prenda copy() {
+    return new Prenda(this.tipoPrenda, this.material, this.colorPrimario, this.colorSecundario);
+  }
+
+  public void guardar() {
+    if (this.tipoPrenda == null || this.material == null)
+      throw new IllegalArgumentException("¡No se pudo guardar la prenda! La prenda no es valida");
+    this.guardada = true;
+  }
 }
