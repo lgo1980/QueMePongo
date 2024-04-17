@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds;
 
 public enum Categoria {
-  CALZADO, CADERA, DORSO, CABEZA
+  CALZADO, PARTE_SUPERIOR, PARTE_INFERIOR
 }

@@ -1,14 +1,14 @@
 package ar.edu.utn.frba.dds;
 
 public enum TipoPrenda {
-  CAMISA(Categoria.DORSO),
-  PANTALON(Categoria.CADERA),
-  REMERA(Categoria.DORSO),
-  CORBATA(Categoria.DORSO),
+  CAMISA(Categoria.PARTE_SUPERIOR),
+  PANTALON(Categoria.PARTE_INFERIOR),
+  REMERA(Categoria.PARTE_SUPERIOR),
+  CORBATA(Categoria.PARTE_SUPERIOR),
   ZAPATILLA(Categoria.CALZADO),
   ZAPATO(Categoria.CALZADO),
-  PANTALON_CORTO(Categoria.CADERA),
-  SOMBRERO(Categoria.CABEZA);
+  PANTALON_CORTO(Categoria.PARTE_INFERIOR),
+  SOMBRERO(Categoria.PARTE_SUPERIOR);
 
   private final Categoria categoria;
 
