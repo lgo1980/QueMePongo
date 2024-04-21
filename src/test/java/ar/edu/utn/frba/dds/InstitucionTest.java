@@ -7,9 +7,9 @@ public class InstitucionTest {
 
   @Test
   public void UniformeContructorTest() {
-    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, new Material("Algodon"), new Color(1, 3, 2), null);
-    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, new Material("Tela"), new Color(1, 3, 2), null);
-    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, new Material("JEAN"), new Color(1, 3, 2), null);
+    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
+    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
+    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
     UsuarioAdmin usuarioAdmin = new UsuarioAdmin();
     Institucion institucion = new Institucion();
     Institucion institucion2 = new Institucion();

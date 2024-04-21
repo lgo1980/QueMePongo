@@ -6,8 +6,7 @@ public class Institucion {
   private Uniforme uniforme;
 
   public void configurarUniforme(String nombre, Uniforme uniforme, UsuarioAdmin usuarioAdmin) {
-    if (usuarioAdmin == null)
-      throw new IllegalArgumentException("Solo un administrador puede configurar uniformes");
+    this.validarAdministrador(usuarioAdmin);
     this.nombre = nombre;
     this.uniforme = uniforme;
   }
@@ -20,4 +19,8 @@ public class Institucion {
     return uniforme;
   }
 
+  private void validarAdministrador(UsuarioAdmin usuarioAdmin) {
+    if (usuarioAdmin == null)
+      throw new IllegalArgumentException("Solo un administrador puede configurar uniformes");
+  }
 }
