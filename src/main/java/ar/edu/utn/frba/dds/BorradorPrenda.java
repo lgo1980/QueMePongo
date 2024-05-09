@@ -9,6 +9,7 @@ public class BorradorPrenda {
   private Trama trama = Trama.LISA;
   private Color colorPrimario;
   private Color colorSecundario;
+  private Clase clase = Clase.NEUTRA;
 
   public TipoPrenda getTipoPrenda() {
     return tipoPrenda;
@@ -25,7 +26,9 @@ public class BorradorPrenda {
 
   public void setMaterial(Material material) {
     this.validarTipoNoNulo(tipoPrenda);
-    if (material == null) throw new IllegalArgumentException("Especificar el tipo de material");
+    if (material == null) {
+      throw new IllegalArgumentException("Especificar el tipo de material");
+    }
     this.material = material;
   }
 
@@ -44,7 +47,9 @@ public class BorradorPrenda {
 
   public void setColorPrimario(Color colorPrimario) {
     this.validarTipoNoNulo(tipoPrenda);
-    if (material == null) throw new IllegalArgumentException("Especificar el tipo de color primario");
+    if (material == null) {
+      throw new IllegalArgumentException("Especificar el tipo de color primario");
+    }
     this.colorPrimario = colorPrimario;
   }
 
@@ -58,11 +63,21 @@ public class BorradorPrenda {
   }
 
   private void validarTipoNoNulo(TipoPrenda tipoPrenda) {
-    if (tipoPrenda == null)
+    if (tipoPrenda == null) {
       throw new IllegalArgumentException("Especificar el tipo de prenda");
+    }
+  }
+
+  public Clase getClase() {
+    return clase;
+  }
+
+  public void setClase(Clase clase) {
+    this.clase = Optional.ofNullable(clase).orElse(Clase.NEUTRA);
   }
 
   public Prenda guardarPrenda() {
-    return new Prenda(this.tipoPrenda, this.material, this.trama, this.colorPrimario, this.colorSecundario);
+    return new Prenda(this.tipoPrenda, this.material,
+        this.trama, this.colorPrimario, this.colorSecundario, clase);
   }
 }

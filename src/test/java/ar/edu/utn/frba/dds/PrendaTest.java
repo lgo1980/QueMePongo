@@ -14,20 +14,4 @@ public class PrendaTest {
     borradorPrenda.setTipoPrenda(TipoPrenda.REMERA);
     Assertions.assertEquals(Categoria.PARTE_SUPERIOR, borradorPrenda.getTipoPrenda().getCategoria());
   }
-/*
-  @Test
-  public void expeptionSetMaterial() {
-    Prenda prenda = new Prenda();
-    IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        prenda.setMaterial(null));
-    Assertions.assertEquals("Especificar el tipo de material", exception.getMessage());
-  }
-
-  @Test
-  public void expeptionSetColorPrimario() {
-    Prenda prenda = new Prenda();
-    IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        prenda.setColorPrimario(null));
-    Assertions.assertEquals("Especificar el tipo de color primario", exception.getMessage());
-  }*/
 }

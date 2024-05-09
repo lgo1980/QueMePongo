@@ -6,18 +6,24 @@ import org.junit.jupiter.api.Test;
 public class InstitucionTest {
 
   @Test
-  public void UniformeContructorTest() {
-    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
-    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
-    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null);
-    UsuarioAdmin usuarioAdmin = new UsuarioAdmin();
+  public void configurarUniformeConFaltantesTest() {
     Institucion institucion = new Institucion();
-    Institucion institucion2 = new Institucion();
-    Uniforme uniforme = new Uniforme(prendaZapatilla, prendaPantalon, prendaRemera);
     IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        institucion.configurarUniforme("Saint Jean", uniforme, null));
-    Assertions.assertEquals("Solo un administrador puede configurar uniformes", exception.getMessage());
-    institucion2.configurarUniforme("Saint Jean", uniforme, usuarioAdmin);
-    Assertions.assertEquals("Saint Jean", institucion2.getNombre());
+        institucion.configurarUniforme(null, null));
+    Assertions.assertEquals("Debe ingresar un nombre de la institucion", exception.getMessage());
+    exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
+        institucion.configurarUniforme("Saint Jean", null));
+    Assertions.assertEquals("Debe ingresar un uniforme de la institucion", exception.getMessage());
+  }
+
+  @Test
+  public void configurarUniformeCorrectoTest() {
+    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRA);
+    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRA);
+    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRA);
+    Institucion institucion = new Institucion();
+    Uniforme uniforme = new Uniforme(prendaZapatilla, prendaPantalon, prendaRemera);
+    institucion.configurarUniforme("Saint Jean", uniforme);
+    Assertions.assertEquals("Saint Jean", institucion.getNombre());
   }
 }

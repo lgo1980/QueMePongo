@@ -7,14 +7,16 @@ public class Prenda {
   private final Trama trama;
   private final Color colorPrimario;
   private final Color colorSecundario;
+  private final Clase clase;
 
   public Prenda(TipoPrenda tipoPrenda, Material material, Trama trama,
-                Color colorPrimario, Color colorSecundario) {
+                Color colorPrimario, Color colorSecundario, Clase clase) {
     this.tipoPrenda = tipoPrenda;
     this.material = material;
     this.trama = trama;
     this.colorPrimario = colorPrimario;
     this.colorSecundario = colorSecundario;
+    this.clase = clase;
   }
 
   public TipoPrenda getTipoPrenda() {
@@ -35,6 +37,10 @@ public class Prenda {
 
   public Color getColorSecundario() {
     return colorSecundario;
+  }
+
+  public Clase getClase() {
+    return clase;
   }
 
 }
