@@ -52,4 +52,10 @@ public class Uniforme {
     this.parteSuperior = parteSuperior;
   }
 
+  Boolean esAptaParaLaTemperatura(Double temperatura) {
+    return calzado.getTemperaturaMaxima() > temperatura
+        && parteInferior.getTemperaturaMaxima() > temperatura
+        && parteSuperior.getTemperaturaMaxima() > temperatura;
+  }
+
 }

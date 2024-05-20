@@ -47,6 +47,7 @@ public class Usuario {
   }
 
   public List<Uniforme> recibirSugerencias() {
+    List<Uniforme> uniformesSugeridos = motor.generarSugerencias(this);
     return motor.generarSugerencias(this);
   }
 }

@@ -10,6 +10,7 @@ public class BorradorPrenda {
   private Color colorPrimario;
   private Color colorSecundario;
   private Clase clase = Clase.NEUTRA;
+  private Double temperaturaMaxima;
 
   public TipoPrenda getTipoPrenda() {
     return tipoPrenda;
@@ -76,8 +77,16 @@ public class BorradorPrenda {
     this.clase = Optional.ofNullable(clase).orElse(Clase.NEUTRA);
   }
 
+  public Double getTemperaturaMaxima() {
+    return temperaturaMaxima;
+  }
+
+  public void setTemperaturaMaxima(Double temperaturaMaxima) {
+    this.temperaturaMaxima = temperaturaMaxima;
+  }
+
   public Prenda guardarPrenda() {
-    return new Prenda(this.tipoPrenda, this.material,
-        this.trama, this.colorPrimario, this.colorSecundario, clase);
+    return new Prenda(tipoPrenda, material, trama, colorPrimario,
+        colorSecundario, clase, temperaturaMaxima);
   }
 }
