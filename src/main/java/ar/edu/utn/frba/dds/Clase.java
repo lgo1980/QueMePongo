@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds;
 
 public enum Clase {
-  FORMAL, INFORMAL, NEUTRA
+  FORMAL, INFORMAL, NEUTRAL
 }

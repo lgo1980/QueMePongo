@@ -7,12 +7,14 @@ public class Usuario {
   private List<Prenda> prendas;
   private int edad;
   private MotorSugerencia motor;
+  private final AsesorDeImagen asesorDeImagen;
 
-  public Usuario(List<Prenda> prendas, int edad, MotorSugerencia motor) {
+  public Usuario(List<Prenda> prendas, int edad, MotorSugerencia motor, AsesorDeImagen asesorDeImagen) {
     validarPrenda(prendas);
     this.prendas = prendas;
     this.edad = edad;
     this.motor = motor;
+    this.asesorDeImagen = asesorDeImagen;
   }
 
   private static void validarPrenda(List<Prenda> prendas) {
@@ -50,4 +52,11 @@ public class Usuario {
     List<Uniforme> uniformesSugeridos = motor.generarSugerencias(this);
     return motor.generarSugerencias(this);
   }
+
+  Uniforme recibirSugerenciaPorTemperatura() {
+    List<Uniforme> uniformesSugeridos = motor.generarSugerencias(this);
+    return asesorDeImagen.sugerirUniforme(uniformesSugeridos);
+  }
+
+
 }

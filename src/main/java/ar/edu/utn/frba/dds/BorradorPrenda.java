@@ -9,7 +9,7 @@ public class BorradorPrenda {
   private Trama trama = Trama.LISA;
   private Color colorPrimario;
   private Color colorSecundario;
-  private Clase clase = Clase.NEUTRA;
+  private Clase clase = Clase.NEUTRAL;
   private Double temperaturaMaxima;
 
   public TipoPrenda getTipoPrenda() {
@@ -74,7 +74,7 @@ public class BorradorPrenda {
   }
 
   public void setClase(Clase clase) {
-    this.clase = Optional.ofNullable(clase).orElse(Clase.NEUTRA);
+    this.clase = Optional.ofNullable(clase).orElse(Clase.NEUTRAL);
   }
 
   public Double getTemperaturaMaxima() {

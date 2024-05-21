@@ -18,13 +18,14 @@ public class AsesorDeImagen {
     this.servicioMeteorologico = servicioMeteorologico;
   }
 
-  public Uniforme sugerirUniforme(List<Uniforme> combinaciones) {
+  public Uniforme sugerirUniforme(List<Uniforme> uniformes) {
     CondicionClimatica estadoDelTiempo = servicioMeteorologico
         .obtenerCondicionesClimaticas();
 
-    return combinaciones.stream()
+    return uniformes.stream()
         .filter(combinacion -> combinacion.esAptaParaLaTemperatura(estadoDelTiempo.getTemperatura()))
-        .anyMatch();
+        .findFirst()
+        .orElse(null);
   }
 
 }
