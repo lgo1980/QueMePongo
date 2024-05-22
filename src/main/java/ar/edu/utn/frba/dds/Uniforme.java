@@ -8,17 +8,17 @@ public class Uniforme {
 
   public Uniforme(Prenda calzado,
                   Prenda parteInferior, Prenda parteSuperior) {
-    if (calzado.getTipoPrenda().getCategoria()
+    if (calzado.tipoPrenda().getCategoria()
         != Categoria.CALZADO) {
       throw new IllegalArgumentException(
           "Se ingreso una prenda como calzado, que no lo era");
     }
-    if (parteInferior.getTipoPrenda().getCategoria()
+    if (parteInferior.tipoPrenda().getCategoria()
         != Categoria.PARTE_INFERIOR) {
       throw new IllegalArgumentException(
           "Se ingreso una prenda como parte inferior, que no lo era");
     }
-    if (parteSuperior.getTipoPrenda().getCategoria()
+    if (parteSuperior.tipoPrenda().getCategoria()
         != Categoria.PARTE_SUPERIOR) {
       throw new IllegalArgumentException(
           "Se ingreso una prenda como parte superior, que no lo era");
@@ -53,9 +53,9 @@ public class Uniforme {
   }
 
   Boolean esAptaParaLaTemperatura(Double temperatura) {
-    return calzado.getTemperaturaMaxima() > temperatura
-        && parteInferior.getTemperaturaMaxima() > temperatura
-        && parteSuperior.getTemperaturaMaxima() > temperatura;
+    return calzado.temperaturaMaxima() < temperatura
+        && parteInferior.temperaturaMaxima() < temperatura
+        && parteSuperior.temperaturaMaxima() < temperatura;
   }
 
 }

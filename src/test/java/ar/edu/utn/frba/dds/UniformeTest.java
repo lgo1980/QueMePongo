@@ -7,9 +7,9 @@ public class UniformeTest {
 
   @Test
   public void UniformeContructorTest() {
-    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL);
-    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL);
-    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL);
+    Prenda prendaRemera = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL, 20D);
+    Prenda prendaZapatilla = new Prenda(TipoPrenda.ZAPATILLA, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL, 20D);
+    Prenda prendaPantalon = new Prenda(TipoPrenda.PANTALON, Material.ALGODON, Trama.LISA, new Color(1, 3, 2), null, Clase.NEUTRAL, 20D);
     IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
         new Uniforme(prendaRemera, null, null));
     Assertions.assertEquals("Se ingreso una prenda como calzado, que no lo era", exception.getMessage());
@@ -20,6 +20,6 @@ public class UniformeTest {
         new Uniforme(prendaZapatilla, prendaPantalon, prendaPantalon));
     Assertions.assertEquals("Se ingreso una prenda como parte superior, que no lo era", exception.getMessage());
     Uniforme uniforme = new Uniforme(prendaZapatilla, prendaPantalon, prendaRemera);
-    Assertions.assertEquals(TipoPrenda.ZAPATILLA, uniforme.getCalzado().getTipoPrenda());
+    Assertions.assertEquals(TipoPrenda.ZAPATILLA, uniforme.getCalzado().tipoPrenda());
   }
 }

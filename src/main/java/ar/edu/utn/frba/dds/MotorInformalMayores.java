@@ -9,7 +9,7 @@ public class MotorInformalMayores extends MotorSugerencia {
   List<Prenda> devolverUsuario(Usuario usuario) {
     return usuario.getEdad() > 55
         ? usuario.getPrendas().stream().filter(
-            prenda -> prenda.getClase() == Clase.INFORMAL)
+            prenda -> prenda.clase() == Clase.INFORMAL)
         .toList()
         : usuario.getPrendas();
   }

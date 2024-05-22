@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,8 @@ public class UsuarioTest {
   @BeforeEach
   public void setUp() {
     ProveedorMotor.setMotor(new MotorBasico());
+    ServicioMeteorologicoAccuWeatherApi servicio = new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherAPI(), Duration.ofHours(1), "Buenos Aires, Argentina");
+    AsesorDeImagen asesorDeImagen = new AsesorDeImagen(servicio);
     Prenda remera1 = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(0, 2, 3), null, Clase.INFORMAL, 20D);
     Prenda remera2 = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(0, 2, 3), null, Clase.NEUTRAL, 20D);
     Prenda remera3 = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(0, 2, 3), null, Clase.FORMAL, 20D);
@@ -38,19 +41,19 @@ public class UsuarioTest {
     prendas.add(zapatilla1);
     prendas.add(zapatilla2);
     prendas.add(zapatilla3);
-    usuarioCon3PrendasDeCadaCategoria = new Usuario(prendas, 32, ProveedorMotor.getMotor());
+    usuarioCon3PrendasDeCadaCategoria = new Usuario(prendas, 32, ProveedorMotor.getMotor(), asesorDeImagen);
     List<Prenda> prendas2 = new ArrayList<>();
     prendas2.add(remera1);
     prendas2.add(pantalon2);
     prendas2.add(zapatilla1);
-    usuarioCon1PrendasDeCadaCategoria = new Usuario(prendas2, 55, ProveedorMotor.getMotor());
+    usuarioCon1PrendasDeCadaCategoria = new Usuario(prendas2, 55, ProveedorMotor.getMotor(), asesorDeImagen);
     List<Prenda> prendas3 = new ArrayList<>();
     prendas3.add(remera1);
     prendas3.add(remera2);
     prendas3.add(remera3);
     prendas3.add(pantalon2);
     prendas3.add(zapatilla1);
-    usuarioConDistintasPrendasDeCadaCategoria = new Usuario(prendas3, 56, ProveedorMotor.getMotor());
+    usuarioConDistintasPrendasDeCadaCategoria = new Usuario(prendas3, 56, ProveedorMotor.getMotor(), asesorDeImagen);
     List<Prenda> prendas4 = new ArrayList<>();
     prendas4.add(remera1);
     prendas4.add(remera2);
@@ -58,17 +61,17 @@ public class UsuarioTest {
     prendas4.add(pantalon2);
     prendas4.add(pantalon1);
     prendas4.add(zapatilla2);
-    usuarioQueNoTengaAlgoDeLos3Informal = new Usuario(prendas4, 56, ProveedorMotor.getMotor());
+    usuarioQueNoTengaAlgoDeLos3Informal = new Usuario(prendas4, 56, ProveedorMotor.getMotor(), asesorDeImagen);
   }
 
   @DisplayName("Validar que el usuario reciba una lista de prendas validas")
   @Test
   public void configurarUniformeConFaltantesTest() {
     IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        new Usuario(null, 0, null));
+        new Usuario(null, 0, null, null));
     Assertions.assertEquals("Debe ingresar una lista de prendas validas", exception.getMessage());
     exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        new Usuario(new ArrayList<>(), 0, null));
+        new Usuario(new ArrayList<>(), 0, null, null));
     Assertions.assertEquals("Debe ingresar una lista de prendas validas", exception.getMessage());
   }
 

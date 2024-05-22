@@ -9,7 +9,8 @@ public class Usuario {
   private MotorSugerencia motor;
   private final AsesorDeImagen asesorDeImagen;
 
-  public Usuario(List<Prenda> prendas, int edad, MotorSugerencia motor, AsesorDeImagen asesorDeImagen) {
+  public Usuario(List<Prenda> prendas, int edad, MotorSugerencia motor,
+                 AsesorDeImagen asesorDeImagen) {
     validarPrenda(prendas);
     this.prendas = prendas;
     this.edad = edad;

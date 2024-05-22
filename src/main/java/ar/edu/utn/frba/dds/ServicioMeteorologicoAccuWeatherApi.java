@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologico {
@@ -13,7 +12,17 @@ public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologic
   private final String direccion;
   private LocalDateTime proximaExpiracion;
 
-  public ServicioMeteorologicoAccuWeatherApi(AccuWeatherAPI api, Duration periodoDeValidez, String direccion) {
+  public ServicioMeteorologicoAccuWeatherApi(
+      AccuWeatherAPI api, Duration periodoDeValidez, String direccion) {
+    if (api == null) {
+      throw new IllegalArgumentException("Debe ingresar una api del clima");
+    }
+    if (periodoDeValidez == null) {
+      throw new IllegalArgumentException("Debe ingresar un periodo de validez");
+    }
+    if (direccion == null) {
+      throw new IllegalArgumentException("Debe ingresar una localidad");
+    }
     this.api = api;
     this.periodoDeValidez = periodoDeValidez;
     this.direccion = direccion;
@@ -22,13 +31,18 @@ public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologic
   public CondicionClimatica obtenerCondicionesClimaticas() {
     if (this.expiro()) {
       Map<String, Object> condicion = consultarApi();
-      Double temperatura = Double.valueOf(condicion.get("Temperature").get("Unit").get("F")
-          ? condicion.get("Temperature").get("Value") * 5 / 9
-          : condicion.get("Temperature").get("Value"));
+      Double temperatura = obtenerTemperatura(condicion);
       condicionClimatica = new CondicionClimatica(temperatura);
       proximaExpiracion = LocalDateTime.now().plus(periodoDeValidez);
     }
     return condicionClimatica;
+  }
+
+  private static Double obtenerTemperatura(Map<String, Object> condicion) {
+    Map<String, Object> temperatura = (Map<String, Object>) condicion.get("Temperature");
+    String unit = (String) temperatura.get("Unit");
+    Double valor = (Double) temperatura.get("Value");
+    return (unit.equals("F") ? valor * (5 / 9) : valor);
   }
 
   private LocalDateTime proximaExpiracion() {
@@ -41,5 +55,9 @@ public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologic
 
   public boolean expiro() {
     return proximaExpiracion.isAfter(LocalDateTime.now());
+  }
+
+  public String getDireccion() {
+    return direccion;
   }
 }

@@ -4,26 +4,20 @@ import java.util.List;
 
 public class AsesorDeImagen {
 
-  private ServicioMeteorologicoAccuWeatherApi servicioMeteorologico;
+  private final ServicioMeteorologico servicioMeteorologico;
 
-  public AsesorDeImagen(ServicioMeteorologicoAccuWeatherApi servicioMeteorologico) {
-    this.servicioMeteorologico = servicioMeteorologico;
-  }
-
-  public ServicioMeteorologicoAccuWeatherApi getServicioMeteorologico() {
-    return servicioMeteorologico;
-  }
-
-  public void setServicioMeteorologico(ServicioMeteorologicoAccuWeatherApi servicioMeteorologico) {
+  public AsesorDeImagen(ServicioMeteorologico servicioMeteorologico) {
     this.servicioMeteorologico = servicioMeteorologico;
   }
 
   public Uniforme sugerirUniforme(List<Uniforme> uniformes) {
+    if (uniformes.isEmpty()) {
+      throw new RuntimeException("La lista de uniformes no puede ser vacia");
+    }
     CondicionClimatica estadoDelTiempo = servicioMeteorologico
         .obtenerCondicionesClimaticas();
-
     return uniformes.stream()
-        .filter(combinacion -> combinacion.esAptaParaLaTemperatura(estadoDelTiempo.getTemperatura()))
+        .filter(combinacion -> combinacion.esAptaParaLaTemperatura(estadoDelTiempo.temperatura()))
         .findFirst()
         .orElse(null);
   }

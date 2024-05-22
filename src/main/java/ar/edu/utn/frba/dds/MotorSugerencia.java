@@ -9,15 +9,15 @@ public abstract class MotorSugerencia {
   List<Uniforme> generarSugerencias(Usuario usuario) {
     List<Prenda> prendas = devolverUsuario(usuario);
     List<Prenda> prendasSuperiores = prendas.stream()
-        .filter(prenda -> prenda.getTipoPrenda().getCategoria()
+        .filter(prenda -> prenda.tipoPrenda().getCategoria()
             == Categoria.PARTE_SUPERIOR)
         .toList();
     List<Prenda> prendasInferiores = prendas.stream()
-        .filter(prenda -> prenda.getTipoPrenda().getCategoria()
+        .filter(prenda -> prenda.tipoPrenda().getCategoria()
             == Categoria.PARTE_INFERIOR)
         .toList();
     List<Prenda> prendasCalzados = prendas.stream()
-        .filter(prenda -> prenda.getTipoPrenda().getCategoria()
+        .filter(prenda -> prenda.tipoPrenda().getCategoria()
             == Categoria.CALZADO)
         .toList();
     List<List<Prenda>> sugerencias = Lists.cartesianProduct(
