@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 public abstract class MotorSugerencia {
 
-  List<Uniforme> generarSugerencias(Usuario usuario) {
-    List<Prenda> prendas = devolverUsuario(usuario);
+  List<Uniforme> generarSugerencias(Guardarropa guardarropa) {
+    List<Prenda> prendas = devolverUsuario(guardarropa);
     List<Prenda> prendasSuperiores = prendas.stream()
         .filter(prenda -> prenda.tipoPrenda().getCategoria()
             == Categoria.PARTE_SUPERIOR)
@@ -28,5 +28,5 @@ public abstract class MotorSugerencia {
         .collect(Collectors.toList());
   }
 
-  abstract List<Prenda> devolverUsuario(Usuario usuario);
+  abstract List<Prenda> devolverUsuario(Guardarropa guardarropa);
 }

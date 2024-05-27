@@ -5,7 +5,7 @@ import java.util.List;
 public class MotorBasico extends MotorSugerencia {
 
   @Override
-  List<Prenda> devolverUsuario(Usuario usuario) {
-    return usuario.getPrendas();
+  List<Prenda> devolverUsuario(Guardarropa guardarropa) {
+    return guardarropa.getPrendas();
   }
 }

@@ -1,36 +1,28 @@
 package ar.edu.utn.frba.dds;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
 
-  private List<Prenda> prendas;
+  private final List<Guardarropa> guardarropas;
   private int edad;
-  private MotorSugerencia motor;
-  private final AsesorDeImagen asesorDeImagen;
 
-  public Usuario(List<Prenda> prendas, int edad, MotorSugerencia motor,
-                 AsesorDeImagen asesorDeImagen) {
-    validarPrenda(prendas);
-    this.prendas = prendas;
+  public Usuario(int edad) {
     this.edad = edad;
-    this.motor = motor;
-    this.asesorDeImagen = asesorDeImagen;
+    guardarropas = new ArrayList<>();
   }
 
-  private static void validarPrenda(List<Prenda> prendas) {
-    if (prendas == null || prendas.isEmpty()) {
-      throw new IllegalArgumentException("Debe ingresar una lista de prendas validas");
+  public Usuario(List<Guardarropa> guardarropas, int edad) {
+    validarGuardarropa(guardarropas);
+    this.guardarropas = guardarropas;
+    this.edad = edad;
+  }
+
+  private static void validarGuardarropa(List<Guardarropa> guardarropas) {
+    if (guardarropas == null || guardarropas.isEmpty()) {
+      throw new IllegalArgumentException("Debe ingresar una lista de guardarropas validas");
     }
-  }
-
-  public List<Prenda> getPrendas() {
-    return prendas;
-  }
-
-  public void setPrendas(List<Prenda> prendas) {
-    validarPrenda(prendas);
-    this.prendas = prendas;
   }
 
   public int getEdad() {
@@ -41,23 +33,16 @@ public class Usuario {
     this.edad = edad;
   }
 
-  public MotorSugerencia getMotor() {
-    return motor;
+  public List<Guardarropa> getGuardarropas() {
+    return guardarropas;
   }
 
-  public void setMotor(MotorSugerencia motor) {
-    this.motor = motor;
+  public void agregarGuardarropa(Guardarropa guardarropa) {
+    this.guardarropas.add(guardarropa);
   }
 
-  public List<Uniforme> recibirSugerencias() {
-    List<Uniforme> uniformesSugeridos = motor.generarSugerencias(this);
-    return motor.generarSugerencias(this);
+  public void removerGuardarropa(Guardarropa guardarropa) {
+    this.guardarropas.remove(guardarropa);
   }
-
-  Uniforme recibirSugerenciaPorTemperatura() {
-    List<Uniforme> uniformesSugeridos = motor.generarSugerencias(this);
-    return asesorDeImagen.sugerirUniforme(uniformesSugeridos);
-  }
-
 
 }

@@ -6,11 +6,11 @@ public class MotorInformalMayores extends MotorSugerencia {
 
 
   @Override
-  List<Prenda> devolverUsuario(Usuario usuario) {
-    return usuario.getEdad() > 55
-        ? usuario.getPrendas().stream().filter(
+  List<Prenda> devolverUsuario(Guardarropa guardarropa) {
+    return guardarropa.getUsuarioCreador().getEdad() > 55
+        ? guardarropa.getPrendas().stream().filter(
             prenda -> prenda.clase() == Clase.INFORMAL)
         .toList()
-        : usuario.getPrendas();
+        : guardarropa.getPrendas();
   }
 }
