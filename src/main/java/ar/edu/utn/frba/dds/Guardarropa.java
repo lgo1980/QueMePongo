@@ -72,4 +72,15 @@ public class Guardarropa {
     return asesorDeImagen.sugerirUniforme(uniformesSugeridos);
   }
 
+  public List<SugerirAccion> getSugerenciasDeAcciones() {
+    return sugerenciasDeAcciones;
+  }
+
+  void agregarSugerenciaDeAccion(SugerirAccion sugerirAccion) {
+    sugerenciasDeAcciones.add(sugerirAccion);
+  }
+
+  void removerSugerenciaDeAccion(SugerirAccion sugerirAccion) {
+    sugerenciasDeAcciones.remove(sugerirAccion);
+  }
 }

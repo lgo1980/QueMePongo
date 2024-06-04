@@ -1,19 +1,19 @@
 package ar.edu.utn.frba.dds;
 
-public class SugerirAccionDeAgregar extends SugerirAccion{
+public class SugerirAccionDeAgregar extends SugerirAccion {
 
-  @Override
-  void aceptarPrenda(Guardarropa guardarropa) {
-
+  public SugerirAccionDeAgregar(Prenda prenda) {
+    super(prenda);
   }
 
   @Override
-  void removerPrenda(Guardarropa guardarropa) {
-
+  void aplicarAceptarSugerencia(Guardarropa guardarropa) {
+    guardarropa.agregarPrenda(getPrenda());
   }
 
   @Override
-  void deshacerAccion(Guardarropa guardarropa) {
-
+  void aplicarDeshacerAccion(Guardarropa guardarropa) {
+    guardarropa.removerPrenda(getPrenda());
   }
+
 }
