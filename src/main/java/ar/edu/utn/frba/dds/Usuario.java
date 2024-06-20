@@ -45,4 +45,8 @@ public class Usuario {
     this.guardarropas.remove(guardarropa);
   }
 
+  void calcularSugerenciaDiaria() {
+    guardarropas.forEach(Guardarropa::sugerenciaDiaria);
+  }
+
 }

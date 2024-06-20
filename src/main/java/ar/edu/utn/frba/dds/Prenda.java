@@ -4,7 +4,7 @@ public record Prenda(TipoPrenda tipoPrenda, Material material, Trama trama,
                      Color colorPrimario, Color colorSecundario,
                      Clase clase, Double temperaturaMaxima) {
 
-  Boolean isAptaParaLaTemperatura(Double temperatura) {
+  Boolean esAptaParaLaTemperatura(Double temperatura) {
     return temperatura < temperaturaMaxima;
   }
 }

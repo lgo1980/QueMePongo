@@ -4,8 +4,8 @@ import java.util.*;
 
 public final class AccuWeatherAPI {
 
-    public final List<Map<String, Object>> getWeather(String ciudad) {
-		return List.of(new HashMap<String, Object>() {{
+  public final List<Map<String, Object>> getWeather(String ciudad) {
+    return List.of(new HashMap<String, Object>() {{
       put("DateTime", "2019-05-03T01:00:00-03:00");
       put("EpochDateTime", 1556856000);
       put("WeatherIcon", 33);
@@ -20,5 +20,14 @@ public final class AccuWeatherAPI {
         put("UnitType", 18);
       }});
     }});
-	}
+  }
+
+  Map<String, List<String>> getAlerts(String ciudad) {
+    Map<String, List<String>> mapaRetorno = new HashMap<>();
+    List<String> lista = new ArrayList<>();
+    lista.add("STORM");
+    lista.add("HAIL");
+    lista.add("HURRICANE");
+    return (Map<String, List<String>>) mapaRetorno.put("CurrentAlerts", lista);
+  }
 }

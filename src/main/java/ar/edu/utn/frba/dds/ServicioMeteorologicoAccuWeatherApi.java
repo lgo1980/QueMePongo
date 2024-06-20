@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologico {
@@ -38,12 +39,24 @@ public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologic
     return condicionClimatica;
   }
 
+  @Override
+  public List<AlertaMeteorologica> obtenerAlertaMeteorologica() {
+    List<String> alertas = api.getAlerts(direccion).get("CurrentAlerts");
+    return (List<AlertaMeteorologica>) alertas.stream().map(alerta -> switch (alerta) {
+      case "STORM" -> AlertaMeteorologica.TORMENTA;
+      case "HAIL" -> AlertaMeteorologica.GRANIZO;
+      default -> AlertaMeteorologica.HURACAN;
+    });
+  }
+
   private static Double obtenerTemperatura(Map<String, Object> condicion) {
     Map<String, Object> temperatura = (Map<String, Object>) condicion.get("Temperature");
     String unit = (String) temperatura.get("Unit");
     Double valor = (Double) temperatura.get("Value");
     return (unit.equals("F") ? valor * (5 / 9) : valor);
   }
+
+
 
   private LocalDateTime proximaExpiracion() {
     return LocalDateTime.now().plus(this.periodoDeValidez);

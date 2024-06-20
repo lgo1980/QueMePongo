@@ -10,6 +10,7 @@ public class Guardarropa {
   private MotorSugerencia motor;
   private final AsesorDeImagen asesorDeImagen;
   private List<SugerirAccion> sugerenciasDeAcciones;
+  private Uniforme uniformeDelDia;
 
   public Guardarropa(List<Prenda> prendas, CriterioGuardarropa criterioGuardarropa,
                      Usuario usuarioCreador, MotorSugerencia motor, AsesorDeImagen asesorDeImagen) {
@@ -83,4 +84,9 @@ public class Guardarropa {
   void removerSugerenciaDeAccion(SugerirAccion sugerirAccion) {
     sugerenciasDeAcciones.remove(sugerirAccion);
   }
+
+  void sugerenciaDiaria() {
+    uniformeDelDia = asesorDeImagen.sugerirUniforme(motor.generarSugerencias(this));
+  }
+
 }
