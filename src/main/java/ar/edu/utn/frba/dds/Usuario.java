@@ -7,6 +7,7 @@ public class Usuario {
 
   private final List<Guardarropa> guardarropas;
   private int edad;
+  private List<AccionParaAlertasMeteorologicas> accionParaAlertasMeteorologicas;
 
   public Usuario(int edad) {
     this.edad = edad;
@@ -37,6 +38,15 @@ public class Usuario {
     return guardarropas;
   }
 
+  public List<AccionParaAlertasMeteorologicas> getAccionParaAlertasMeteorologicas() {
+    return accionParaAlertasMeteorologicas;
+  }
+
+  public void setAccionParaAlertasMeteorologicas(
+      List<AccionParaAlertasMeteorologicas> accionParaAlertasMeteorologicas) {
+    this.accionParaAlertasMeteorologicas = accionParaAlertasMeteorologicas;
+  }
+
   public void agregarGuardarropa(Guardarropa guardarropa) {
     this.guardarropas.add(guardarropa);
   }
@@ -49,4 +59,8 @@ public class Usuario {
     guardarropas.forEach(Guardarropa::sugerenciaDiaria);
   }
 
+  void realizarAccionesSobreAlertas(List<AlertaMeteorologica> alertas) {
+    accionParaAlertasMeteorologicas.forEach(accion ->
+        accion.nuevasAlertas(alertas, this));
+  }
 }

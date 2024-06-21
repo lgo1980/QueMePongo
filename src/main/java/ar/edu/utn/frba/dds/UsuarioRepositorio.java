@@ -11,6 +11,10 @@ public class UsuarioRepositorio {
     this.usuarios = (usuarios.isEmpty()) ? new ArrayList<>() : usuarios;
   }
 
+  public List<Usuario> getUsuarios() {
+    return usuarios;
+  }
+
   public void agregarUsuarios(Usuario usuario) {
     this.usuarios.add(usuario);
   }

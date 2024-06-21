@@ -89,4 +89,7 @@ public class Guardarropa {
     uniformeDelDia = asesorDeImagen.sugerirUniforme(motor.generarSugerencias(this));
   }
 
+  public Uniforme getUniformeDelDia() {
+    return uniformeDelDia;
+  }
 }

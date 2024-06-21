@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class ServicioMeteorologicoAccuWeatherApi implements ServicioMeteorologico {
 
-  private final AccuWeatherAPI api;
+  private final AccuWeatherApi api;
   private final Duration periodoDeValidez;
   private CondicionClimatica condicionClimatica;
   private final String direccion;
   private LocalDateTime proximaExpiracion;
 
   public ServicioMeteorologicoAccuWeatherApi(
-      AccuWeatherAPI api, Duration periodoDeValidez, String direccion) {
+      AccuWeatherApi api, Duration periodoDeValidez, String direccion) {
     if (api == null) {
       throw new IllegalArgumentException("Debe ingresar una api del clima");
     }

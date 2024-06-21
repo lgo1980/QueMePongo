@@ -21,7 +21,7 @@ public class GuardarropaTest {
   public void setUp() {
     ProveedorMotor.setMotor(new MotorBasico());
     ServicioMeteorologicoAccuWeatherApi servicio = new ServicioMeteorologicoAccuWeatherApi(
-        new AccuWeatherAPI(), Duration.ofHours(1), "Buenos Aires, Argentina");
+        new AccuWeatherApi(), Duration.ofHours(1), "Buenos Aires, Argentina");
     AsesorDeImagen asesorDeImagen = new AsesorDeImagen(servicio);
     Prenda remera1 = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(0, 2, 3),
         null, Clase.INFORMAL, 20D);

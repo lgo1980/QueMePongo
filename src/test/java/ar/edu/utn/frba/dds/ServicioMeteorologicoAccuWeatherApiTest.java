@@ -25,19 +25,19 @@ public class ServicioMeteorologicoAccuWeatherApiTest {
         new ServicioMeteorologicoAccuWeatherApi(null, null, null));
     assertEquals("Debe ingresar una api del clima", exception.getMessage());
     exception = assertThrows(IllegalArgumentException.class, () ->
-        new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherAPI(), null, null));
+        new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherApi(), null, null));
     assertEquals("Debe ingresar un periodo de validez", exception.getMessage());
     exception = assertThrows(IllegalArgumentException.class, () ->
-        new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherAPI(), Duration.ofHours(1), null));
+        new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherApi(), Duration.ofHours(1), null));
     assertEquals("Debe ingresar una localidad", exception.getMessage());
-    ServicioMeteorologicoAccuWeatherApi servico = new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherAPI(), Duration.ofHours(1), "Buenos Aires, Argentina");
+    ServicioMeteorologicoAccuWeatherApi servico = new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherApi(), Duration.ofHours(1), "Buenos Aires, Argentina");
     assertEquals("Buenos Aires, Argentina", servico.getDireccion());
   }
 
   @DisplayName("Ver que si ingreso los parametros necesarios se pueda instanciar el servicio meteorologico")
   @Test
   public void instanciarServicioMeteorologicoBienSinMockitoTest() {
-    ServicioMeteorologicoAccuWeatherApi servico = new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherAPI(), Duration.ofHours(1), "Buenos Aires, Argentina");
+    ServicioMeteorologicoAccuWeatherApi servico = new ServicioMeteorologicoAccuWeatherApi(new AccuWeatherApi(), Duration.ofHours(1), "Buenos Aires, Argentina");
     assertEquals("Buenos Aires, Argentina", servico.getDireccion());
   }
 

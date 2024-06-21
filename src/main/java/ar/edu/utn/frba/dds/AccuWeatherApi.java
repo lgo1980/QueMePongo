@@ -1,8 +1,12 @@
 package ar.edu.utn.frba.dds;
 
-import java.util.*;
 
-public final class AccuWeatherAPI {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public final class AccuWeatherApi {
 
   public final List<Map<String, Object>> getWeather(String ciudad) {
     return List.of(new HashMap<String, Object>() {{
