@@ -6,14 +6,13 @@ import java.util.List;
 public class RegistroDeAlertasMeteorologicas {
   private final ServicioMeteorologico servicioMeteorologico;
   private List<AlertaMeteorologica> alertaMeteorologicas;
-  private UsuarioRepositorio usuarioRepositorio;
+  private final UsuarioRepositorio usuarioRepositorio;
 
   public RegistroDeAlertasMeteorologicas(
-      ServicioMeteorologico servicioMeteorologico,
-      List<AlertaMeteorologica> alertaMeteorologicas) {
+      ServicioMeteorologico servicioMeteorologico, UsuarioRepositorio usuarioRepositorio) {
     this.servicioMeteorologico = servicioMeteorologico;
-    this.alertaMeteorologicas = (alertaMeteorologicas.isEmpty())
-        ? new ArrayList<>() : alertaMeteorologicas;
+    this.usuarioRepositorio = usuarioRepositorio;
+    this.alertaMeteorologicas = new ArrayList<>();
   }
 
   public void actualizarAlertas() {
@@ -21,6 +20,5 @@ public class RegistroDeAlertasMeteorologicas {
     usuarioRepositorio.getUsuarios().forEach(usuario ->
         usuario.realizarAccionesSobreAlertas(alertaMeteorologicas));
   }
-
 
 }

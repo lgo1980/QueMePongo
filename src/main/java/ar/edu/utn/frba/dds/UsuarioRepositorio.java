@@ -15,7 +15,7 @@ public class UsuarioRepositorio {
     return usuarios;
   }
 
-  public void agregarUsuarios(Usuario usuario) {
+  public void agregarUsuario(Usuario usuario) {
     this.usuarios.add(usuario);
   }
 
