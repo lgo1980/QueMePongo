@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-public class CorreoElectronicoMailSender implements MailSender {
+public class CorreoElectronicoMailSender implements CorreoElectronico {
 
   private final MailSender mailSender;
 

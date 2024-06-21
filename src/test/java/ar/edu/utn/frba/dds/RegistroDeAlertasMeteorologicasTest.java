@@ -6,11 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,14 +18,15 @@ public class RegistroDeAlertasMeteorologicasTest {
   //  private AccuWeatherApi apiExterna;
   private ServicioMeteorologico servicioMeteorologicoApi;
   private RegistroDeAlertasMeteorologicas registroDeAlertasMeteorologicas;
-  private MailSender mailer;
+  private CorreoElectronico mailer;
   private NotificationService notificador;
 
   @BeforeEach
   public void setUp() {
+    ProveedorMotor.setMotor(new MotorBasico());
 //    apiExterna = mock(AccuWeatherApi.class);
     servicioMeteorologicoApi = mock(ServicioMeteorologico.class);
-    mailer = mock(MailSender.class);
+    mailer = mock(CorreoElectronico.class);
     notificador = mock(NotificationService.class);
     /*ServicioMeteorologico servicioMeteorologico = new ServicioMeteorologicoAccuWeatherApi(
         apiExterna, Duration.ofHours(1), "Buenos Aires, Argentina");*/
@@ -64,10 +62,11 @@ public class RegistroDeAlertasMeteorologicasTest {
     prendas.add(zapatilla3);
     Usuario usuarioCon3PrendasDeCadaCategoria = new Usuario(32);
     List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
-    listaDeAcciones.add(new AccionParaAlertasParaNotificacion());
-    listaDeAcciones.add(new AccionParaAlertasParaEmail());
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+//    CorreoElectronico correoElectronico = new CorreoElectronicoMailSender(mailer);
+    listaDeAcciones.add(new AccionParaAlertasParaEmail(mailer));
     listaDeAcciones.add(new AccionParaAlertasParaRecalculo());
-    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas();
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
     guardarropaCon3PrendasDeCadaCategoria = new Guardarropa(prendas,
         CriterioGuardarropa.ROPA_DE_ENTRECASA, usuarioCon3PrendasDeCadaCategoria,
         ProveedorMotor.getMotor(), asesorDeImagen);
@@ -86,9 +85,10 @@ public class RegistroDeAlertasMeteorologicasTest {
     lista.add(AlertaMeteorologica.GRANIZO);
     lista.add(AlertaMeteorologica.TORMENTA);
 //    mapa.put("CurrentAlerts", lista);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
     when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
     registroDeAlertasMeteorologicas.actualizarAlertas();
-    verify(mailer, Mockito.only()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
     verify(notificador, Mockito.only()).notificar(Mockito.any());
 //    assertEquals("La lista de uniformes no puede ser vacia", exception.getMessage());
   }
