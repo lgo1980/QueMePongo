@@ -18,7 +18,7 @@ public class RegistroDeAlertasMeteorologicas {
   public void actualizarAlertas() {
     alertaMeteorologicas = servicioMeteorologico.obtenerAlertaMeteorologica();
     if (!alertaMeteorologicas.isEmpty()) {
-      usuarioRepositorio.getUsuarios().forEach(usuario ->
+      usuarioRepositorio.usuarios().forEach(usuario ->
           usuario.realizarAccionesSobreAlertas(alertaMeteorologicas));
     }
   }
