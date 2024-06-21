@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,NP_UNWRITTEN_FIELD,BX_UNBOXING_IMMEDIATELY_REBOXED,UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    <Match>
+        <Class name="ar.edu.utn.frba.dds"/>
+    </Match>
+</FindBugsFilter>

@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,21 +14,20 @@ import org.mockito.Mockito;
 
 public class RegistroDeAlertasMeteorologicasTest {
 
-  //  private AccuWeatherApi apiExterna;
   private ServicioMeteorologico servicioMeteorologicoApi;
   private RegistroDeAlertasMeteorologicas registroDeAlertasMeteorologicas;
-  private CorreoElectronico mailer;
+  private MailSender mailer;
   private NotificationService notificador;
+  private AccionParaAlertasParaRecalculo accionRecalculo;
+  private Usuario usuarioCon3PrendasDeCadaCategoria;
 
   @BeforeEach
   public void setUp() {
     ProveedorMotor.setMotor(new MotorBasico());
-//    apiExterna = mock(AccuWeatherApi.class);
     servicioMeteorologicoApi = mock(ServicioMeteorologico.class);
-    mailer = mock(CorreoElectronico.class);
+    mailer = mock(MailSender.class);
     notificador = mock(NotificationService.class);
-    /*ServicioMeteorologico servicioMeteorologico = new ServicioMeteorologicoAccuWeatherApi(
-        apiExterna, Duration.ofHours(1), "Buenos Aires, Argentina");*/
+    accionRecalculo = mock(AccionParaAlertasParaRecalculo.class);
     AsesorDeImagen asesorDeImagen = new AsesorDeImagen(servicioMeteorologicoApi);
     Prenda remera1 = new Prenda(TipoPrenda.REMERA, Material.ALGODON, Trama.LISA, new Color(0, 2, 3),
         null, Clase.INFORMAL, 20D);
@@ -60,13 +58,7 @@ public class RegistroDeAlertasMeteorologicasTest {
     prendas.add(zapatilla1);
     prendas.add(zapatilla2);
     prendas.add(zapatilla3);
-    Usuario usuarioCon3PrendasDeCadaCategoria = new Usuario(32);
-    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
-    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
-//    CorreoElectronico correoElectronico = new CorreoElectronicoMailSender(mailer);
-    listaDeAcciones.add(new AccionParaAlertasParaEmail(mailer));
-    listaDeAcciones.add(new AccionParaAlertasParaRecalculo());
-    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    usuarioCon3PrendasDeCadaCategoria = new Usuario(32);
     guardarropaCon3PrendasDeCadaCategoria = new Guardarropa(prendas,
         CriterioGuardarropa.ROPA_DE_ENTRECASA, usuarioCon3PrendasDeCadaCategoria,
         ProveedorMotor.getMotor(), asesorDeImagen);
@@ -77,19 +69,160 @@ public class RegistroDeAlertasMeteorologicasTest {
         servicioMeteorologicoApi, usuarioRepositorio);
   }
 
-  @DisplayName("Si se actualizan las alertan se avisan a los usuarios los mensajes correspondientes")
+  @DisplayName("Si hay alertas de Granizo y tormenta y el usuario tiene activadas todas las alertas" +
+      " se avisan a los usuarios los mensajes correspondientes")
   @Test
-  public void actualizarLasAlertas() {
-//    Map<String, List<String>> mapa = new HashMap<>();
+  public void actualizarLasAlertasConGranizoYTormentaConUsuarioConTodasLasAlertas() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+    CorreoElectronico correoElectronico = new CorreoElectronicoMailSender(mailer);
+    listaDeAcciones.add(new AccionParaAlertasParaEmail(correoElectronico));
+    listaDeAcciones.add(accionRecalculo);
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
     List<AlertaMeteorologica> lista = new ArrayList<>();
     lista.add(AlertaMeteorologica.GRANIZO);
     lista.add(AlertaMeteorologica.TORMENTA);
-//    mapa.put("CurrentAlerts", lista);
     when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
     when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.only()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.only()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.only()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si hay alertas de tormenta solamente y el usuario tiene activadas todas las alertas" +
+      " se avisan a los usuarios los mensajes correspondientes")
+  @Test
+  public void actualizarLasAlertasConTormentaConUsuarioConTodasLasAlertas() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+    CorreoElectronico correoElectronico = new CorreoElectronicoMailSender(mailer);
+    listaDeAcciones.add(new AccionParaAlertasParaEmail(correoElectronico));
+    listaDeAcciones.add(accionRecalculo);
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    lista.add(AlertaMeteorologica.TORMENTA);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.only()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.only()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.only()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si hay alertas de tormenta solamente y el usuario tiene activadas la del notificador y recalculo, " +
+      "solo tienen que mandar los mensajes correspondientes a esas 2 alertas")
+  @Test
+  public void actualizarLasAlertasConTormentaConUsuarioConAlgunasDeLasAlertas() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+    listaDeAcciones.add(accionRecalculo);
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    lista.add(AlertaMeteorologica.TORMENTA);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
     registroDeAlertasMeteorologicas.actualizarAlertas();
     verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
     verify(notificador, Mockito.only()).notificar(Mockito.any());
-//    assertEquals("La lista de uniformes no puede ser vacia", exception.getMessage());
+    verify(accionRecalculo, Mockito.only()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si no hay alertas y el usuario tiene activadas todas las alertas" +
+      " no se avisan a los usuarios los mensajes correspondientes")
+  @Test
+  public void NoSeActualizanLasAlertasSiNoHay() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+    CorreoElectronico correoElectronico = new CorreoElectronicoMailSender(mailer);
+    listaDeAcciones.add(new AccionParaAlertasParaEmail(correoElectronico));
+    listaDeAcciones.add(accionRecalculo);
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.never()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.never()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si hay alertas de tormenta solamente y el usuario tiene activadas la del recalculo, " +
+      "solo tienen que mandar los mensajes correspondientes de esa alerta")
+  @Test
+  public void actualizarLasAlertasConTormentaConUsuarioConSoloElRecalculo() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(accionRecalculo);
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    lista.add(AlertaMeteorologica.TORMENTA);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.never()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.only()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si hay alertas de tormenta solamente y el usuario tiene activadas la del notificador, " +
+      "solo tienen que mandar los mensajes correspondientes de esa alerta")
+  @Test
+  public void actualizarLasAlertasConTormentaConUsuarioConSoloElNotificador() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    listaDeAcciones.add(new AccionParaAlertasParaNotificacion(notificador));
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    lista.add(AlertaMeteorologica.TORMENTA);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.only()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.never()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+  }
+
+  @DisplayName("Si hay alertas de tormenta solamente y el usuario tiene activadas la del notificador, " +
+      "solo tienen que mandar los mensajes correspondientes de esa alerta")
+  @Test
+  public void noSeEjecutanLasAlertasSiELUsuarioNoseCargoNinguna() {
+    List<AccionParaAlertasMeteorologicas> listaDeAcciones = new ArrayList<>();
+    usuarioCon3PrendasDeCadaCategoria.setAccionParaAlertasMeteorologicas(listaDeAcciones);
+    List<AlertaMeteorologica> lista = new ArrayList<>();
+    lista.add(AlertaMeteorologica.TORMENTA);
+    lista.add(AlertaMeteorologica.GRANIZO);
+    when(servicioMeteorologicoApi.obtenerCondicionesClimaticas()).thenReturn(new CondicionClimatica(20d));
+    when(servicioMeteorologicoApi.obtenerAlertaMeteorologica()).thenReturn(lista);
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertFalse(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
+    registroDeAlertasMeteorologicas.actualizarAlertas();
+    verify(mailer, Mockito.never()).enviarCorreo(Mockito.any(), Mockito.any());
+    verify(notificador, Mockito.never()).notificar(Mockito.any());
+    verify(accionRecalculo, Mockito.never()).nuevasAlertas(lista, usuarioCon3PrendasDeCadaCategoria);
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.TORMENTA));
+    assertTrue(registroDeAlertasMeteorologicas.getAlertaMeteorologicas().contains(AlertaMeteorologica.GRANIZO));
   }
 }

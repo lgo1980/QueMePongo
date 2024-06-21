@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AccionParaAlertasParaEmail implements AccionParaAlertasMeteorologicas {
 
@@ -12,7 +13,10 @@ public class AccionParaAlertasParaEmail implements AccionParaAlertasMeteorologic
 
   @Override
   public void nuevasAlertas(List<AlertaMeteorologica> alertasMeteorologicas, Usuario usuario) {
-    alertasMeteorologicas.forEach(alertaMeteorologica -> correoElectronico
-        .enviarCorreo(usuario, "La alerta que se genero fue" + alertaMeteorologica.name()));
+    AtomicReference<String> cuerpo = new AtomicReference<>("Las alertas que se generaron fueron: ");
+    alertasMeteorologicas.forEach(alertaMeteorologica -> {
+      cuerpo.set(cuerpo.get() + alertaMeteorologica.name() + " - ");
+    });
+    correoElectronico.enviarCorreo(usuario, cuerpo.get());
   }
 }
